@@ -42,26 +42,26 @@ export function Dashboard() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4" role="main">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Pitch Deck Dashboard</h1>
-        <Button onClick={() => navigate('/')} variant="outline">
+        <Button onClick={() => navigate('/')} variant="outline" aria-label="Navigate back to Generator">
           Back to Generator
         </Button>
       </div>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <p className="text-red-500 mb-4" role="alert" aria-live="assertive">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Saved Pitch Decks</h2>
+        <section aria-labelledby="saved-decks-heading">
+          <h2 id="saved-decks-heading" className="text-xl font-semibold mb-4">Saved Pitch Decks</h2>
           {savedDecks.length === 0 ? (
             <p>No saved pitch decks yet.</p>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-4" aria-label="List of saved pitch decks">
               {savedDecks.map((deck) => (
                 <li key={deck.id} className="border p-4 rounded-lg">
                   <div className="flex items-center">
                     {deck.slides[0]?.imageUrl && (
-                      <img src={deck.slides[0].imageUrl} alt="Deck thumbnail" className="w-16 h-16 object-cover rounded-md mr-4" />
+                      <img src={deck.slides[0].imageUrl} alt={`Thumbnail for ${deck.companyName} pitch deck`} className="w-16 h-16 object-cover rounded-md mr-4" />
                     )}
                     <div>
                       <h3 className="text-lg font-semibold">{deck.companyName}</h3>
@@ -70,22 +70,37 @@ export function Dashboard() {
                   </div>
                   <div className="mt-2 space-x-2">
                     <Link to={`/presentation/${deck.id}`}>
-                      <Button variant="outline" size="sm">View</Button>
+                      <Button variant="outline" size="sm" aria-label={`View ${deck.companyName} pitch deck`}>View</Button>
                     </Link>
-                    <Button variant="outline" size="sm" onClick={() => exportDeck(deck)}>Export</Button>
-                    <Button variant="destructive" size="sm" onClick={() => deleteDeck(deck.id)}>Delete</Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => exportDeck(deck)} 
+                      aria-label={`Export ${deck.companyName} pitch deck`}
+                    >
+                      Export
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      onClick={() => deleteDeck(deck.id)} 
+                      aria-label={`Delete ${deck.companyName} pitch deck`}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </li>
               ))}
             </ul>
           )}
-        </div>
-        <div>
+        </section>
+        <section aria-labelledby="pitch-deck-log-heading">
+          <h2 id="pitch-deck-log-heading" className="sr-only">Pitch Deck Log</h2>
           <PitchDeckLog />
-        </div>
+        </section>
       </div>
       <Link to="/" className="mt-8 inline-block">
-        <Button>Create New Pitch Deck</Button>
+        <Button aria-label="Create a new pitch deck">Create New Pitch Deck</Button>
       </Link>
     </div>
   );

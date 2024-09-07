@@ -1,6 +1,6 @@
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 import jsPDF from 'jspdf'
@@ -18,7 +18,7 @@ export default function PresentationSlide() {
   const [theme, setTheme] = useState('default')
   const [progress, setProgress] = useState(0)
 
-  const slides = deckData?.slides || []
+  const slides = useMemo(() => deckData?.slides || [], [deckData]);
 
   useEffect(() => {
     setProgress((currentSlide / (slides.length - 1)) * 100)
@@ -81,24 +81,27 @@ export default function PresentationSlide() {
       pdf.text(startupIdeaLines, pageWidth / 2, 120, { align: 'center' });
 
       for (let i = 0; i < slides.length; i++) {
+        const slide = slides[i];
+        if (!slide) continue; // Skip if slide is undefined
+
         if (i > 0) pdf.addPage();
         
         pdf.setFont('helvetica', 'bold');
         pdf.setFontSize(28);
-        pdf.text(slides[i].title, 20, 30);
+        pdf.text(slide.title, 20, 30);
 
         pdf.setFont('helvetica', 'normal');
         pdf.setFontSize(16);
         let yOffset = 50;
-        slides[i].content.forEach((point: string) => {
+        slide.content.forEach((point: string) => {
           const lines = pdf.splitTextToSize(`• ${point}`, pageWidth / 2 - 30);
           pdf.text(lines, 25, yOffset);
           yOffset += 10 * lines.length;
         });
 
-        if (slides[i]?.imageUrl && slides[i].imageUrl.trim() !== '') {
+        if (slide.imageUrl && typeof slide.imageUrl === 'string' && slide.imageUrl.trim() !== '') {
           const img = new Image();
-          img.src = slides[i].imageUrl;
+          img.src = slide.imageUrl;
           await new Promise((resolve, reject) => {
             img.onload = resolve;
             img.onerror = reject;
@@ -110,7 +113,8 @@ export default function PresentationSlide() {
 
         pdf.setFont('helvetica', 'italic');
         pdf.setFontSize(12);
-        pdf.text(`Image: ${slides[i].imagePrompt}`, 20, pageHeight - 15);
+        const imagePromptText = slide.imagePrompt ? `Image: ${slide.imagePrompt}` : 'No image prompt';
+        pdf.text(imagePromptText, 20, pageHeight - 15);
       }
 
       pdf.save(`${deckData.companyName}_pitch_deck.pdf`);

@@ -7,6 +7,11 @@ dotenv.config()
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    headers: {
+      'Content-Security-Policy': "script-src 'self' 'unsafe-eval';"
+    }
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

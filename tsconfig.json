@@ -24,7 +24,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+
+    /* Strict TypeScript usage */
+    "noImplicitAny": true,
+    "strictNullChecks": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

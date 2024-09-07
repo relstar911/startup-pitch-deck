@@ -7,6 +7,10 @@ This project is a React-based application that generates professional startup pi
 - Interactive form to input startup information
 - AI-powered slide content generation
 - Animated slide presentation
+- Theme selection for presentations
+- PDF export functionality
+- Save and load pitch decks
+- Dashboard to manage multiple pitch decks
 
 ## Getting Started
 
@@ -19,7 +23,7 @@ This project is a React-based application that generates professional startup pi
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-actual-username/startup-pitch-deck.git
+   git clone https://github.com/your-username/startup-pitch-deck.git
    cd startup-pitch-deck
    ```
 
@@ -42,8 +46,11 @@ This project is a React-based application that generates professional startup pi
 ## Usage
 
 1. Fill out the startup information form on the home page.
-2. Click "Generate Slide" to create your AI-powered pitch deck slide.
+2. Click "Generate Slides" to create your AI-powered pitch deck.
 3. View and interact with your generated slide presentation.
+4. Use the theme selector to change the presentation style.
+5. Export your pitch deck to PDF or save it for later.
+6. Access the dashboard to manage all your saved pitch decks.
 
 ## Technologies Used
 
@@ -74,3 +81,8 @@ In the project directory, you can run:
 - `npm run build`: Builds the app for production.
 - `npm run preview`: Locally preview the production build.
 - `npm start`: Alias for `npm run dev`.
+
+## Acknowledgements
+
+- OpenAI for providing the AI model used in content generation
+- The React community for the excellent tools and libraries

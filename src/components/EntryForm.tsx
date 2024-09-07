@@ -26,6 +26,7 @@ export default function EntryForm() {
   })
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null) // Add this line
   const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -37,16 +38,17 @@ export default function EntryForm() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null); // Reset error state
     try {
-      const slideContent = await generateSlideContent(formData)
-      navigate('/presentation', { state: { formData, slideContent } })
+      const slideContent = await generateSlideContent(formData);
+      navigate('/presentation', { state: { formData, slideContent } });
     } catch (error) {
-      console.error('Error generating slide content:', error)
-      // Add a toast notification or error message to inform the user
+      console.error('Error generating slide content:', error);
+      setError('Failed to generate slide content. Please try again.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -219,6 +221,7 @@ export default function EntryForm() {
             <CardDescription>Step {currentStep} of 3</CardDescription>
           </CardHeader>
           <CardContent>
+            {error && <p className="text-red-500 mb-4">{error}</p>} {/* Add this line to display the error */}
             <form onSubmit={handleSubmit} className="space-y-6">
               {renderFormStep()}
             </form>
